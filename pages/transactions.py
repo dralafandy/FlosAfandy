@@ -111,7 +111,6 @@ else:
                         try:
                             fm.add_custom_category(cat_account_id, cat_trans_type_db, new_category_name)
                             st.success(f"✅ تمت إضافة الفئة: {new_category_name}")
-                            # إذا جاء من "إضافة معاملة"، عد تلقائيًا
                             if st.session_state.from_add_transaction:
                                 st.session_state.active_tab = "إضافة معاملة"
                                 st.session_state.from_add_transaction = False
@@ -168,12 +167,12 @@ else:
         with col_cat1:
             selected_category = st.selectbox("📂 الفئة", options=category_options, key="add_category")
         with col_cat2:
-            if st.button("➕", key="add_category_link", help="إضافة فئة جديدة", type="secondary"):
+            if st.button("➕", key="add_category_link", help="إضافة فئة جديدة"):
                 st.session_state.active_tab = "إدارة الفئات"
-                st.session_state.from_add_transaction = True  # تتبع أن الانتقال جاء من هنا
+                st.session_state.from_add_transaction = True
                 st.rerun()
 
-        amount = st.number_input("💵 المبلغ", min_value=0.01, step=0.01, format="%.2f", key="add_amount")
+        amount = st.number_input("💵 المبلغ", min_value=0.01, value=0.01, step=0.01, format="%.2f", key="add_amount")
         payment_method = st.selectbox("💳 طريقة الدفع", ["كاش", "بطاقة ائتمان", "تحويل بنكي"], key="add_payment")
         description = st.text_area("📝 الوصف", placeholder="وصف المعاملة (اختياري)", key="add_desc")
 
@@ -247,7 +246,9 @@ else:
                 edit_selected_category = st.selectbox("📂 الفئة", options=edit_category_options, 
                                                       index=edit_category_options.index(selected_trans["category"]) if selected_trans["category"] in edit_category_options else 0, 
                                                       key="edit_category")
-                edit_amount = st.number_input("💵 المبلغ", value=float(selected_trans["amount"]), min_value=0.01, step=0.01, format="%.2f", key="edit_amount")
+                # التحقق من أن القيمة لا تقل عن 0.01
+                edit_amount_value = max(float(selected_trans["amount"]), 0.01)  # إذا كانت 0.0، اجعلها 0.01
+                edit_amount = st.number_input("💵 المبلغ", value=edit_amount_value, min_value=0.01, step=0.01, format="%.2f", key="edit_amount")
                 edit_payment = st.selectbox("💳 طريقة الدفع", ["كاش", "بطاقة ائتمان", "تحويل بنكي"], 
                                             index=["كاش", "بطاقة ائتمان", "تحويل بنكي"].index(selected_trans["payment_method"]), key="edit_payment")
                 edit_desc = st.text_area("📝 الوصف", value=selected_trans["description"], key="edit_desc")
