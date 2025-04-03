@@ -30,7 +30,7 @@ if st.session_state.target_page:
 
 # إذا لم يكن المستخدم مسجلاً الدخول، اعرض واجهة تسجيل/تسجيل دخول
 if not st.session_state.logged_in:
-    st.image("https://i.ibb.co/hxjbR4Hv/IMG-2998.png", width=300)
+    st.image("https://i.ibb.co/KpzDy27r/IMG-2998.png", width=300)
     st.title("مرحبًا بك في FloosAfandy")
     tab1, tab2 = st.tabs(["تسجيل الدخول", "تسجيل مستخدم جديد"])
 
