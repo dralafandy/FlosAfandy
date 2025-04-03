@@ -30,6 +30,7 @@ if st.session_state.target_page:
 
 # إذا لم يكن المستخدم مسجلاً الدخول، اعرض واجهة تسجيل/تسجيل دخول
 if not st.session_state.logged_in:
+    st.image("https://i.ibb.co/hxjbR4Hv/IMG-2998.png", width=300, use_container_width=True)
     st.title("مرحبًا بك في FloosAfandy")
     tab1, tab2 = st.tabs(["تسجيل الدخول", "تسجيل مستخدم جديد"])
 
@@ -37,8 +38,8 @@ if not st.session_state.logged_in:
 
     with tab1:  # تسجيل الدخول
         st.subheader("تسجيل الدخول")
-        login_username = st.text_input("اسم المستخدم", key="login_username")
-        login_password = st.text_input("كلمة المرور", type="password", key="login_password")
+        login_username = st.text_input("اسم المستخدم", key="login_username", help="أدخل اسم المستخدم الخاص بك")
+        login_password = st.text_input("كلمة المرور", type="password", key="login_password", help="أدخل كلمة المرور الخاصة بك")
         if st.button("تسجيل الدخول"):
             if fm.verify_user(login_username, login_password):
                 st.session_state.user_id = login_username
@@ -48,11 +49,14 @@ if not st.session_state.logged_in:
             else:
                 st.error("اسم المستخدم أو كلمة المرور غير صحيحة!")
 
+        if st.button("نسيت كلمة المرور؟"):
+            st.info("يرجى الاتصال بالدعم لاستعادة كلمة المرور.")
+
     with tab2:  # تسجيل مستخدم جديد
         st.subheader("إنشاء حساب جديد")
-        new_username = st.text_input("اسم المستخدم الجديد", key="new_username")
-        new_password = st.text_input("كلمة المرور", type="password", key="new_password")
-        confirm_password = st.text_input("تأكيد كلمة المرور", type="password", key="confirm_password")
+        new_username = st.text_input("اسم المستخدم الجديد", key="new_username", help="أدخل اسم المستخدم الجديد")
+        new_password = st.text_input("كلمة المرور", type="password", key="new_password", help="أدخل كلمة المرور الجديدة")
+        confirm_password = st.text_input("تأكيد كلمة المرور", type="password", key="confirm_password", help="أعد إدخال كلمة المرور الجديدة")
         if st.button("تسجيل"):
             if new_password == confirm_password:
                 if fm.add_user(new_username, new_password):
