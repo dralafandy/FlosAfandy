@@ -35,7 +35,7 @@ else:
     fm = FinanceManager(st.session_state.user_id)
 
     with st.sidebar:
-        st.image("https://i.ibb.co/KpzDy27r/IMG-2998.png", width=300)
+        st.image("https://i.ibb.co/KpzDy27r/IMG-2998.png", width=300, use_container_width=True)
         st.markdown(f"<h2>💰 FloosAfandy - {st.session_state.user_id}</h2>", unsafe_allow_html=True)
         alerts = fm.check_alerts()
         if alerts:
