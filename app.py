@@ -31,7 +31,7 @@ if st.session_state.target_page:
 # إذا لم يكن المستخدم مسجلاً الدخول، اعرض واجهة تسجيل/تسجيل دخول
 if not st.session_state.logged_in:
     st.title("مرحبًا بك في FloosAfandy")
-    st.image("https://i.ibb.co/hxjbR4Hv/IMG-2998.png", width=300)
+    st.image("https://i.ibb.co/KpzDy27r/IMG-2998.png", width=300, use_container_width=True)
     tab1, tab2 = st.tabs(["تسجيل الدخول", "تسجيل مستخدم جديد"])
 
     fm = FinanceManager()  # لا حاجة لـ user_id هنا بعد
@@ -70,7 +70,7 @@ else:
     fm = FinanceManager(st.session_state.user_id)
 
     with st.sidebar:
-        st.image("https://i.ibb.co/hxjbR4Hv/IMG-2998.png", width=300)
+        st.image("https://i.ibb.co/KpzDy27r/IMG-2998.png", width=300, use_container_width=True)
         st.markdown(f"<h2>💰 FloosAfandy - {st.session_state.user_id}</h2>", unsafe_allow_html=True)
         alerts = fm.check_alerts()
         if alerts:
