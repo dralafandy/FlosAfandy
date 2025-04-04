@@ -3,29 +3,32 @@ import streamlit as st
 def apply_mobile_styles():
     st.markdown("""
         <style>
-            /* Menu button styles */
-            .stButton button {
-                border-radius: 8px !important;
-                padding: 8px 16px !important;
-                font-size: 16px !important;
-            }
-            
-            /* Sidebar styles */
-            .stSidebar {
-                background-color: #f8f9fa;
-                padding: 20px;
-            }
-            
-            /* Responsive adjustments */
+            /* Basic mobile adjustments */
             @media (max-width: 768px) {
-                .stSidebar {
-                    width: 100% !important;
-                    min-width: 100% !important;
+                /* Hide sidebar completely on mobile */
+                section[data-testid="stSidebar"] {
+                    display: none !important;
                 }
                 
+                /* Make content full width on mobile */
+                .main .block-container {
+                    padding: 1rem 1rem 10rem;
+                    width: 100% !important;
+                }
+                
+                /* Adjust font sizes for mobile */
+                h1 {
+                    font-size: 1.5rem !important;
+                }
+                
+                h2 {
+                    font-size: 1.3rem !important;
+                }
+                
+                /* Make buttons more touch-friendly */
                 .stButton button {
-                    font-size: 14px !important;
-                    padding: 6px 12px !important;
+                    min-width: 100px;
+                    padding: 0.5rem;
                 }
             }
         </style>
