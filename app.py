@@ -33,7 +33,12 @@ if st.session_state.current_page == "home":
     else:
         # عرض الصفحة الرئيسية للتسجيل
         st.title("مرحبًا بك في FloosAfandy")
-        st.image("https://i.ibb.co/KpzDy27r/IMG-2998.png", width=300, use_container_width=True)
+        st.markdown(
+            f'<div style="display: flex; justify-content: center; margin: 20px 0;">'
+            f'<img src="https://i.ibb.co/KpzDy27r/IMG-2998.png" width="300">'
+            f'</div>',
+            unsafe_allow_html=True
+        )
         tab1, tab2 = st.tabs(["🔑 تسجيل الدخول", "🆕 إنشاء حساب جديد"])
 
         fm = FinanceManager()
