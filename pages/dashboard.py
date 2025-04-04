@@ -51,7 +51,12 @@ if "user_id" not in st.session_state or not st.session_state.logged_in:
 else:
     fm = FinanceManager(st.session_state.user_id)
 
-    st.image("https://i.ibb.co/KpzDy27r/IMG-2998.png", width=300, use_container_width=True)# Welcome Banner
+    st.markdown(
+        f'<div style="display: flex; justify-content: center; margin: 20px 0;">'
+        f'<img src="https://i.ibb.co/KpzDy27r/IMG-2998.png" width="300">'
+        f'</div>',
+        unsafe_allow_html=True
+    )  # Centered Welcome Banner
     st.markdown(f"""
         <div style="background-color: #0066cc; color: white; padding: 15px; border-radius: 10px; text-align: center;">
             <h1>مرحبًا بك في لوحة التحكم، {st.session_state.user_id}!</h1>
