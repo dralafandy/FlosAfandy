@@ -4,10 +4,10 @@ import plotly.express as px
 from finance_manager import FinanceManager
 from datetime import timedelta, datetime, date
 from dateutil.relativedelta import relativedelta
-from styles import apply_sidebar_styles
+from mobile_styles import apply_mobile_styles
 
 # تعيين إعدادات الصفحة أولاً
-st.set_page_config(page_title="FloosAfandy - تقاريري", layout="wide", initial_sidebar_state="auto")
+st.set_page_config(page_title="FloosAfandy - التقارير", layout="wide", initial_sidebar_state="collapsed")
 
 # تهيئة الحالة
 if "user_id" not in st.session_state:
@@ -19,14 +19,31 @@ if "target_page" not in st.session_state:
 if "logged_in" not in st.session_state:
     st.session_state.logged_in = False
 
-apply_sidebar_styles()
+apply_mobile_styles()
 
-# التحقق من الانتقال إلى صفحة جديدة
-if st.session_state.target_page:
-    target = st.session_state.target_page
-    st.session_state.target_page = None
-    st.session_state.collapse_sidebar = True
-    st.switch_page(target)
+# Horizontal navigation bar
+col1, col2, col3, col4, col5, col6, col7 = st.columns(7)
+with col1:
+    if st.button("🏠 الرئيسية", key="nav_home"):
+        st.switch_page("app.py")
+with col2:
+    if st.button("📊 لوحة التحكم", key="nav_dashboard"):
+        st.switch_page("pages/dashboard.py")
+with col3:
+    if st.button("💳 المعاملات", key="nav_transactions"):
+        st.switch_page("pages/transactions.py")
+with col4:
+    if st.button("🏦 الحسابات", key="nav_accounts"):
+        st.switch_page("pages/accounts.py")
+with col5:
+    if st.button("💰 الميزانيات", key="nav_budgets"):
+        st.switch_page("pages/budgets.py")
+with col6:
+    if st.button("📈 التقارير", key="nav_reports"):
+        st.switch_page("pages/reports.py")
+with col7:
+    if st.button("📚 التعليمات", key="nav_instructions"):
+        st.switch_page("pages/instructions.py")
 
 # التحقق من تسجيل الدخول
 if "user_id" not in st.session_state or "logged_in" not in st.session_state or not st.session_state.logged_in:
@@ -35,43 +52,8 @@ if "user_id" not in st.session_state or "logged_in" not in st.session_state or n
 else:
     fm = FinanceManager(st.session_state.user_id)
 
-    with st.sidebar:
-        st.image("https://i.ibb.co/KpzDy27r/IMG-2998.png", width=300, use_container_width=True)
-        st.markdown(f"<h2>💰 FloosAfandy - {st.session_state.user_id}</h2>", unsafe_allow_html=True)
-        alerts = fm.check_alerts()
-        if alerts:
-            st.markdown(f"<p style='text-align: center; color: #f1c40f;'>⚠️ {len(alerts)} تنبيهات</p>", unsafe_allow_html=True)
-        st.markdown("<hr>", unsafe_allow_html=True)
-
-        st.markdown("<div class='section-title'>الصفحات</div>", unsafe_allow_html=True)
-        
-        col1, col2 = st.columns(2)
-        with col1:
-            if st.button("📈 لوحة التحكم", key="nav_home"):
-                st.session_state.target_page = "app.py"
-                st.rerun()
-        with col2:
-            if st.button("💸 معاملاتي", key="nav_transactions"):
-                st.session_state.target_page = "pages/transactions.py"
-                st.rerun()
-
-        col3, col4 = st.columns(2)
-        with col3:
-            if st.button("🏦 حساباتي", key="nav_accounts"):
-                st.session_state.target_page = "pages/accounts.py"
-                st.rerun()
-        with col4:
-            if st.button("📊 تقاريري", key="nav_reports"):
-                st.session_state.target_page = "pages/reports.py"
-                st.rerun()
-
-        if st.button("تسجيل الخروج", key="logout"):
-            st.session_state.logged_in = False
-            st.session_state.user_id = None
-            st.rerun()
-
-    st.title("📊 تقاريري")
-    st.markdown("<p style='color: #6b7280;'>رؤية واضحة لأدائك المالي</p>", unsafe_allow_html=True)
+    st.title("📊 التقارير المالية")
+    st.markdown("<p style='color: #6b7280;'>احصل على رؤية شاملة لأدائك المالي من خلال التقارير التفصيلية.</p>", unsafe_allow_html=True)
     st.markdown("---")
 
     accounts = fm.get_all_accounts()
@@ -142,15 +124,15 @@ else:
     col1, col2, col3, col4 = st.columns(4)
     with col1:
         st.markdown("<div class='metric-box' style='background: linear-gradient(#86efac, #22c55e);'>", unsafe_allow_html=True)
-        st.metric("📥 الوارد", f"{income:,.2f}")
+        st.metric("📥 الوارد", f"{income:,.2f} جنيه")
         st.markdown("</div>", unsafe_allow_html=True)
     with col2:
         st.markdown("<div class='metric-box' style='background: linear-gradient(#f87171, #ef4444); color: #ffffff;'>", unsafe_allow_html=True)
-        st.metric("📤 الصادر", f"{expenses:,.2f}")
+        st.metric("📤 الصادر", f"{expenses:,.2f} جنيه")
         st.markdown("</div>", unsafe_allow_html=True)
     with col3:
         st.markdown("<div class='metric-box' style='background: linear-gradient(#60a5fa, #3b82f6); color: #ffffff;'>", unsafe_allow_html=True)
-        st.metric("📊 الصافي", f"{net:,.2f}")
+        st.metric("📊 الصافي", f"{net:,.2f} جنيه")
         st.markdown("</div>", unsafe_allow_html=True)
     with col4:
         st.markdown("<div class='metric-box' style='background: linear-gradient(#d1d5db, #9ca3af);'>", unsafe_allow_html=True)

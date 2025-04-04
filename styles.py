@@ -8,71 +8,84 @@ def apply_sidebar_styles():
             font-family: Arial, sans-serif;
             font-size: 15px;
         }
-        .sidebar .sidebar-content {
+        .horizontal-navbar {
+            display: flex;
+            justify-content: center;
+            align-items: center;
             background-color: #ffffff;
-            color: #444444;
-            padding: 20px;
-            max-width: 300px;
-            border-left: 1px solid #dddddd;
+            padding: 10px 0;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
         }
-        .sidebar h2 {
-            color: #444444;
-            font-size: 18px;
-            text-align: left;
-            margin: 15px 0;
-            font-weight: bold;
-        }
-        .sidebar hr {
-            border: none;
-            border-top: 1px solid #eeeeee;
-            margin: 15px 0;
-        }
-        .stButton>button {
+        .horizontal-navbar button {
             background-color: #0066cc;
-            color: #ffffff;
-            border-radius: 4px;
-            padding: 10px;
-            font-size: 13px;
-            font-weight: bold;
-            width: 100%;
+            color: white;
             border: none;
-            cursor: pointer;
-            transition: background-color 0.2s ease;
-        }
-        .stButton>button:hover {
-            background-color: #005bb5;
-        }
-        .stSelectbox, .stTextInput {
-            background-color: #ffffff;
-            color: #444444;
             border-radius: 4px;
-            padding: 8px;
-            font-size: 13px;
-            border: 1px solid #cccccc;
-            margin-bottom: 10px;
+            padding: 10px 15px;
+            margin: 0 5px;
+            font-size: 14px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.2s ease, transform 0.2s ease;
+        }
+        .horizontal-navbar button:hover {
+            background-color: #005bb5;
+            transform: scale(1.05);
+        }
+        .horizontal-navbar img {
+            height: 40px;
+            margin-right: 20px;
         }
         [data-testid="stSidebarNav"] {
             display: none !important;
         }
-        .section-title {
-            color: #444444;
-            font-size: 12px;
-            margin: 10px 0 5px 0;
-            text-transform: uppercase;
+        </style>
+    """, unsafe_allow_html=True)
+
+def apply_topbar_styles():
+    st.markdown("""
+        <style>
+        .topbar {
+            background-color: #0066cc;
+            color: white;
+            padding: 10px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        .topbar a {
+            color: white;
+            text-decoration: none;
+            margin: 0 15px;
+            font-size: 16px;
+            font-weight: bold;
+            transition: color 0.3s ease;
+        }
+        .topbar a:hover {
+            color: #ffcc00;
+        }
+        .topbar .logo {
+            font-size: 20px;
             font-weight: bold;
         }
-        @media (max-width: 768px) {
-            .stApp {
-                font-size: 14px;
-            }
-            .sidebar .sidebar-content {
-                max-width: 100%;
-                border-left: none;
-            }
-            .stButton>button {
-                font-size: 12px;
-                padding: 8px;
-            }
+        .card {
+            background-color: #ffffff;
+            padding: 15px;
+            border-radius: 10px;
+            margin: 10px 0;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
         }
         </style>
     """, unsafe_allow_html=True)

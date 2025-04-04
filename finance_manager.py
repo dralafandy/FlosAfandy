@@ -1,11 +1,63 @@
 import sqlite3
 from datetime import datetime
+import bcrypt  # إضافة المكتبة
 
 class FinanceManager:
     def __init__(self, user_id=None):
         self.conn = sqlite3.connect('finance.db', check_same_thread=False)
         self.user_id = user_id
         self.create_tables()
+        self._initialize_sample_data()
+
+    def _initialize_sample_data(self):
+        # Check if sample data already exists
+        cursor = self.conn.cursor()
+        cursor.execute("SELECT COUNT(*) FROM users WHERE username='mohamed'")
+        if cursor.fetchone()[0] > 0:
+            return
+            
+        # Create sample user
+        cursor.execute("INSERT INTO users (username, password) VALUES (?, ?)", 
+                      ('mohamed', '123'))
+        
+        # Create sample accounts
+        accounts = [
+            ('البنك الأهلي', 5000.0),
+            ('محفظة النقود', 2000.0),
+            ('بطاقة الائتمان', -1000.0)
+        ]
+        for name, balance in accounts:
+            cursor.execute("INSERT INTO accounts (user_id, name, balance) VALUES (?, ?, ?)",
+                         (1, name, balance))
+        
+        # Create sample categories
+        categories = [
+            (1, 'IN', 'مرتب'),
+            (1, 'IN', 'مكافأة'),
+            (1, 'OUT', 'طعام'),
+            (1, 'OUT', 'مواصلات'),
+            (1, 'OUT', 'تسوق')
+        ]
+        for acc_id, trans_type, name in categories:
+            cursor.execute("INSERT INTO categories (account_id, transaction_type, name) VALUES (?, ?, ?)",
+                         (acc_id, trans_type, name))
+        
+        # Create sample transactions
+        transactions = [
+            (1, 100.0, 'IN', 'مرتب شهر يناير', 'تحويل بنكي', 'مرتب', '2023-01-01'),
+            (1, 50.0, 'OUT', 'سوبر ماركت', 'بطاقة ائتمان', 'طعام', '2023-01-05'),
+            (2, 20.0, 'OUT', 'تاكسي', 'كاش', 'مواصلات', '2023-01-10'),
+            (3, 200.0, 'OUT', 'ملابس', 'بطاقة ائتمان', 'تسوق', '2023-01-15'),
+            (1, 500.0, 'IN', 'مكافأة أداء', 'تحويل بنكي', 'مكافأة', '2023-01-20')
+        ]
+        for acc_id, amount, trans_type, desc, method, category, date in transactions:
+            cursor.execute("""
+                INSERT INTO transactions 
+                (account_id, amount, type, description, payment_method, category, date)
+                VALUES (?, ?, ?, ?, ?, ?, ?)
+            """, (acc_id, amount, trans_type, desc, method, category, date))
+        
+        self.conn.commit()
 
     def create_tables(self):
         with self.conn:
@@ -46,21 +98,22 @@ class FinanceManager:
             ''')
 
     def add_user(self, username, password):
-        """إضافة مستخدم جديد"""
+        """إضافة مستخدم جديد مع تشفير كلمة المرور"""
+        hashed_password = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
         with self.conn:
             try:
-                self.conn.execute('INSERT INTO users (username, password) VALUES (?, ?)', (username, password))
+                self.conn.execute('INSERT INTO users (username, password) VALUES (?, ?)', (username, hashed_password))
                 self.conn.commit()
                 return True
             except sqlite3.IntegrityError:
                 return False  # المستخدم موجود بالفعل
 
     def verify_user(self, username, password):
-        """التحقق من بيانات المستخدم"""
+        """التحقق من بيانات المستخدم مع فك تشفير كلمة المرور"""
         with self.conn:
             cursor = self.conn.execute('SELECT password FROM users WHERE username = ?', (username,))
             result = cursor.fetchone()
-            return result and result[0] == password
+            return result and bcrypt.checkpw(password.encode('utf-8'), result[0])
 
     def add_account(self, name, opening_balance, min_balance):
         with self.conn:
